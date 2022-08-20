@@ -1,0 +1,338 @@
+﻿
+@{
+    ViewBag.Title = "Clientes";
+    string cliente = string.Empty;
+}
+@model IEnumerable<Consumos.Modelos.ModelClientes>
+<hr />
+
+<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center w-100">
+    <div class="toast" id="mMensaje">
+        <div class="toast-header">
+            <strong class="me-auto"><i class="bi-gift-fill"></i> Mensaje</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            <div id="mensaje"></div>
+        </div>
+    </div>
+</div>
+
+    <div class="container-sm">
+        <br />
+
+        <br />
+        @if (Model != null)
+        {
+            if (ViewBag.Error != null)
+            {
+                <div class="alert alert-warning" role="alert">
+                    @ViewBag.Error
+                </div>
+            }
+            if (ViewBag.Ok != null)
+            {
+                <div class="alert alert-success" id="Status" role="alert">
+                    @ViewBag.Ok
+                </div>
+            }
+            <table id="tbDocumentos" class="table table-hover">
+                <thead>
+                    <tr>
+                        <td colspan="11" class="text-center">Clientes</td>
+                    </tr>
+                    <tr>
+                        <td colspan="11">
+                            <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
+                                <i class="fa fa-plus"></i>
+                                <span>Clientes</span>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th hidden>@Html.DisplayNameFor(model => model.Codigo)</th>
+                        <th hidden>@Html.DisplayNameFor(model => model.Tipodocumento)</th>
+                        <th>@Html.DisplayNameFor(model => model.DescripcionDocumento)</th>
+                        <th>@Html.DisplayNameFor(model => model.Identificacion)</th>
+                        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                        <th>@Html.DisplayNameFor(model => model.Email)</th>
+                        <th>@Html.DisplayNameFor(model => model.Celular)</th>
+                        <th>@Html.DisplayNameFor(model => model.Direccion)</th>
+                        <th>@Html.DisplayNameFor(model => model.DireccionInstalacion)</th>
+                        <th>@Html.DisplayNameFor(model => model.Activo)</th>
+                        <th>Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td hidden>@Html.DisplayFor(modelItem => item.Codigo)</td>
+                            <td hidden>@Html.DisplayFor(modelItem => item.Tipodocumento)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DescripcionDocumento)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Identificacion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Celular)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                            <td>@Html.DisplayFor(modelItem => item.DireccionInstalacion)</td>
+                            <td>
+                                <div class="row p-1">
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col align-self-end">
+                                        <div class="form-check form-switch">
+                                            @if (item.Activo)
+                                            {
+                                                <input class="Estado form-check-input" data-path="@Url.Action("CambiarEstado", "Clientes", new { id = @item.Codigo })" checked type="checkbox">
+                                            }
+                                            else
+                                            {
+                                                <input class="Estado form-check-input" data-path="@Url.Action("CambiarEstado", "Clientes", new { id = @item.Codigo })" type="checkbox">
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button title="Modificar" data-bs-toggle="modal" data-bs-target="#EditModal" type="button" class="btn btn-primary btn-sm editar">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </button>
+                                    <button title="Eliminar" data-path="@Url.Action("Delete", "Clientes", new { id = @item.Codigo })"
+                                            data-bs-toggle="modal" data-bs-target="#mdEliminar" class="btn btn-primary btn-sm eliminar">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </button>
+
+
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
+                <i class="fa fa-plus"></i>
+                <span>Clientes</span>
+            </button>
+        }
+
+    </div>
+
+
+
+
+    <div class="modal fade" id="mdEliminar" data-bs-backdrop="static" tabindex="-1" aria-labelledby="mdEliminar" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmación de eliminación</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Usted esta seguro que desea eliminar este registro?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button id="btnContinueDelete" type="button" class="btn btn-primary">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade modal-lg" id="EditModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="EditModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleModal"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="list-group-item">
+                    <div class="container-fluid">
+                        @using (Html.BeginForm("Guardar", "Clientes", FormMethod.Post, new { @class= "needs-validation", @novalidate= "novalidate" }))
+                        {
+                            <div class="modal-body">
+                                <div class="row p-1">
+                                    <label for="Codigo" hidden class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Codigo)</label>
+                                    <div class="col-7">
+                                        <input type="hidden" class="form-control col-md-10" id="Codigo" name="Codigo" />
+                                    </div>
+                                </div>
+
+                                <div class="row p-1">
+                                    <label for="Tipodocumento"  class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Tipodocumento)</label>
+                                    <div class="col-7">
+                                        @Html.DropDownList("Tipodocumento", new SelectList((IEnumerable<Consumos.Modelos.ModelTipoDocumentos>)(ViewData["TipoDocumento"]), "Codigo", "Descripcion"), "Seleccione una opción", new { @Class = "form-control", @required = "required" })
+                                        <div class="invalid-feedback">Seleccione una opcion valida.</div>
+                                    </div>
+                                </div>
+
+                                <div class="row p-1">
+                                    <label for="Identificacion" class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Identificacion)</label>
+                                    <div class="col-7">
+                                        <input type="text" maxlength="20" class="form-control" id="Identificacion" required name="Identificacion" />
+                                        <div class="invalid-feedback">Campo requerido.</div>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <label for="Nombre" required class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Nombre)</label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" required id="Nombre" name="Nombre" />
+                                        <div class="invalid-feedback">Campo requerido.</div>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <label for="Email" class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Email)</label>
+                                    <div class="col-7">
+                                        <input type="email" class="form-control"  required id="Email" name="Email" />
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <label for="Celular" class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Celular)</label>
+                                    <div class="col-7">
+                                        <input type="tel" class="form-control" pattern="[+][0-9]{3}-[0-9]{2}-[0-9]{3}" required id="Celular" name="Celular" />
+                                        <div class="invalid-feedback">Ingrese solo numeros.</div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="row p-1">
+                                    <label for="Direccion" class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Direccion)</label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" required id="Direccion" name="Direccion" />
+                                        <div class="invalid-feedback">Campo requerido.</div>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <label for="DireccionInstalacion" class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.DireccionInstalacion)</label>
+                                    <div class="col-7">
+                                        <input type="text" class="form-control" required id="DireccionInstalacion" name="DireccionInstalacion" />
+                                        <div class="invalid-feedback">Campo requerido.</div>
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col align-self-end">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="Activo" name="Activo">
+                                            <label class="form-check-label" for="Activo">@Html.DisplayNameFor(model => model.Activo)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" id="btnsave" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        $(document).ready(function () {
+            $("#tbDocumentos").on('click', '.editar', function () {
+                $("#titleModal").text("Modificar cliente");
+                var currentRow = $(this).closest("tr");
+                var col1 = currentRow.find("td:eq(0)").text();
+                var col2 = currentRow.find("td:eq(1)").text();
+                var col3 = currentRow.find("td:eq(3)").text();
+                var col4 = currentRow.find("td:eq(4)").text();
+                var col5 = currentRow.find("td:eq(5)").text();
+                var col6 = currentRow.find("td:eq(6)").text();
+                var col7 = currentRow.find("td:eq(7)").text();
+                var col8 = currentRow.find("td:eq(8)").text();
+                var col9 = currentRow.find("[type=checkbox]").prop('checked');
+                $("#Codigo").val(col1);
+                $("#Tipodocumento").val(col2);
+                $("#Identificacion").val(col3);
+                $("#Nombre").val(col4);
+                $("#Email").val(col5);
+                $("#Celular").val(col6);
+                $("#Direccion").val(col7);
+                $("#DireccionInstalacion").val(col8);
+                if (col9 === true) {
+                    $("#Activo").prop('checked', true)
+
+                } else {
+                    $("#Activo").prop('checked', false)
+                }
+            });
+
+
+            $("#btnAdd").click(function () {
+                $("#titleModal").text("Adicionar cliente");
+                $("#Codigo").val("");
+                $("#Tipodocumento").val("");
+                $("#Identificacion").val("");
+                $("#Nombre").val("");
+                $("#Email").val("");
+                $("#Celular").val("");
+                $("#Direccion").val("");
+                $("#DireccionInstalacion").val("");
+                $("#Activo").prop('checked', true)
+            });
+
+            var urlDelete;
+
+            $(".eliminar").click(function (e) {
+                urlDelete = $(this).data('path');
+            });
+
+            $('#btnContinueDelete').click(function () {
+                window.location = urlDelete;
+            });
+
+
+            var urlActualizarEstado;
+
+
+            $('.Estado').click(function () {
+                urlActualizarEstado = $(this).data('path');
+                $.ajax({
+                    url: urlActualizarEstado,
+                    data: { estado: $(this).prop('checked') },
+                    type: 'POST'
+                }).done(function (data) {
+
+                    $("#mensaje").text(data.message)
+                    $("#mMensaje").toast("show");
+
+                });
+
+            });
+
+
+        });
+
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (() => {
+            'use strict';
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            const forms = document.querySelectorAll('.needs-validation');
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms).forEach((form) => {
+                form.addEventListener('submit', (event) => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+

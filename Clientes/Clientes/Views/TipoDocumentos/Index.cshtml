@@ -1,0 +1,194 @@
+﻿
+@{
+    ViewBag.Title = "Tipo documentos";
+}
+@model IEnumerable<Consumos.Modelos.ModelTipoDocumentos>
+
+<hr />
+
+<div class="container-sm">
+    <br />
+
+    <br />
+    @if (Model != null)
+    {
+        if (ViewBag.Error != null)
+        {
+            <div class="alert alert-warning" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+        if (ViewBag.Ok != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewBag.Ok
+            </div>
+        }
+        <table id="tbDocumentos" class="table table-hover">
+            <thead>
+                <tr>
+                    <td colspan="4" class="text-center">Tipos de documentos</td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i>
+                            <span>Tipo documento</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Codigo)</th>
+                    <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
+                    <th>@Html.DisplayNameFor(model => model.Activo)</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Codigo)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Descripcion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Activo)</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button title="Modificar" data-bs-toggle="modal" data-bs-target="#EditModal" type="button" class="btn btn-primary btn-sm editar">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </button>
+                                <button title="Eliminar" data-path="@Url.Action("Delete", "TipoDocumentos", new { id = @item.Codigo })"
+                                        data-bs-toggle="modal" data-bs-target="#mdEliminar" class="btn btn-primary btn-sm eliminar">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
+            <i class="fa fa-plus"></i>
+            <span>Tipo documento</span>
+        </button>
+    }
+
+</div>
+
+<div class="modal fade" id="mdEliminar"  data-bs-backdrop="static" tabindex="-1" aria-labelledby="mdEliminar" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirmación de eliminación</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Usted esta seguro que desea eliminar este registro?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button id="btnContinueDelete" type="button" class="btn btn-primary">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="modal fade" id="EditModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="EditModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="titleModal"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="list-group-item">
+                    <div class="container-fluid">
+                        @using (Html.BeginForm("Guardar", "TipoDocumentos", FormMethod.Post))
+                        {
+                            <div class="modal-body">
+                                <div class="row p-1">
+                                    <label for="Descripcion" class="col-3 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Codigo)</label>
+                                    <div class="col-9">
+                                        <input type="number" required class="form-control col-md-10" id="Codigo" name="Codigo" />
+                                    </div>
+                                </div>
+
+                                <div class="row p-1">
+                                    <label for="Descripcion" class="col-3 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Descripcion)</label>
+                                    <div class="col-9">
+                                        <input type="text" class="form-control" id="Descripcion" name="Descripcion" />
+                                    </div>
+                                </div>
+                                <div class="row p-1">
+                                    <div class="col"></div>
+                                    <div class="col"></div>
+                                    <div class="col align-self-end">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="Activo" name="Activo">
+                                            <label class="form-check-label" for="Activo">@Html.DisplayNameFor(model => model.Activo)</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(document).ready(function () {
+            $("#tbDocumentos").on('click', '.editar', function () {
+                $("#titleModal").text("Modificar tipo documento");
+                var currentRow = $(this).closest("tr");
+                var col1 = currentRow.find("td:eq(0)").text();
+                var col2 = currentRow.find("td:eq(1)").text();
+                var col3 = currentRow.find("[type=checkbox]").prop('checked');
+
+                $("#Codigo").val(col1);
+                $("#Descripcion").val(col2);
+
+                if (col3 === true) {
+                    $("#Activo").prop('checked', true)
+
+                } else {
+                    $("#Activo").prop('checked', false)
+                }
+            });
+
+
+            $("#btnAdd").click(function () {
+                $("#titleModal").text("Adicionar tipo documento");
+                $("#Codigo").val("");
+                $("#Descripcion").val("");
+                $("#Activo").prop('checked', true)
+            });
+
+            var urlDelete;
+
+            $(".eliminar").click(function (e) {
+                urlDelete = $(this).data('path');
+            });
+
+            $('#btnContinueDelete').click(function () {
+                window.location = urlDelete;
+            });
+
+        });
+    </script>
+
+
+
+
+
+
