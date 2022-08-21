@@ -18,112 +18,130 @@
     </div>
 </div>
 
-    <div class="container-sm">
-        <br />
+<div class="container-sm">
+    <br />
 
-        <br />
-        @if (Model != null)
+    <br />
+    @if (Model != null)
+    {
+        if (ViewBag.Error != null)
         {
-            if (ViewBag.Error != null)
-            {
-                <div class="alert alert-warning" role="alert">
-                    @ViewBag.Error
-                </div>
-            }
-            if (ViewBag.Ok != null)
-            {
-                <div class="alert alert-success" id="Status" role="alert">
-                    @ViewBag.Ok
-                </div>
-            }
-            <table id="tbDocumentos" class="table table-hover">
-                <thead>
+            <div class="alert alert-warning" id="error" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+        if (ViewBag.Ok != null)
+        {
+            <div class="alert alert-success" id="Status" role="alert">
+                @ViewBag.Ok
+            </div>
+        }
+        <table id="tbDocumentos" class="table table-hover">
+            <thead>
+                <tr>
+                    <td colspan="11" class="text-center">Clientes</td>
+                </tr>
+                <tr>
+                    <td colspan="11">
+                        <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
+                            <i class="fa fa-plus"></i>
+                            <span>Clientes</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th hidden>@Html.DisplayNameFor(model => model.Codigo)</th>
+                    <th hidden>@Html.DisplayNameFor(model => model.Tipodocumento)</th>
+                    <th>@Html.DisplayNameFor(model => model.DescripcionDocumento)</th>
+                    <th>@Html.DisplayNameFor(model => model.Identificacion)</th>
+                    <th>@Html.DisplayNameFor(model => model.Nombre)</th>
+                    <th>@Html.DisplayNameFor(model => model.Email)</th>
+                    <th>@Html.DisplayNameFor(model => model.Celular)</th>
+                    <th>@Html.DisplayNameFor(model => model.Direccion)</th>
+                    <th>@Html.DisplayNameFor(model => model.DireccionInstalacion)</th>
+                    <th>@Html.DisplayNameFor(model => model.Activo)</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <td colspan="11" class="text-center">Clientes</td>
-                    </tr>
-                    <tr>
-                        <td colspan="11">
-                            <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
-                                <i class="fa fa-plus"></i>
-                                <span>Clientes</span>
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th hidden>@Html.DisplayNameFor(model => model.Codigo)</th>
-                        <th hidden>@Html.DisplayNameFor(model => model.Tipodocumento)</th>
-                        <th>@Html.DisplayNameFor(model => model.DescripcionDocumento)</th>
-                        <th>@Html.DisplayNameFor(model => model.Identificacion)</th>
-                        <th>@Html.DisplayNameFor(model => model.Nombre)</th>
-                        <th>@Html.DisplayNameFor(model => model.Email)</th>
-                        <th>@Html.DisplayNameFor(model => model.Celular)</th>
-                        <th>@Html.DisplayNameFor(model => model.Direccion)</th>
-                        <th>@Html.DisplayNameFor(model => model.DireccionInstalacion)</th>
-                        <th>@Html.DisplayNameFor(model => model.Activo)</th>
-                        <th>Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td hidden>@Html.DisplayFor(modelItem => item.Codigo)</td>
-                            <td hidden>@Html.DisplayFor(modelItem => item.Tipodocumento)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DescripcionDocumento)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Identificacion)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Celular)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
-                            <td>@Html.DisplayFor(modelItem => item.DireccionInstalacion)</td>
-                            <td>
-                                <div class="row p-1">
-                                    <div class="col"></div>
-                                    <div class="col"></div>
-                                    <div class="col align-self-end">
-                                        <div class="form-check form-switch">
-                                            @if (item.Activo)
-                                            {
-                                                <input class="Estado form-check-input" data-path="@Url.Action("CambiarEstado", "Clientes", new { id = @item.Codigo })" checked type="checkbox">
-                                            }
-                                            else
-                                            {
-                                                <input class="Estado form-check-input" data-path="@Url.Action("CambiarEstado", "Clientes", new { id = @item.Codigo })" type="checkbox">
-                                            }
+                        <td hidden>@Html.DisplayFor(modelItem => item.Codigo)</td>
+                        <td hidden>@Html.DisplayFor(modelItem => item.Tipodocumento)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DescripcionDocumento)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Identificacion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Celular)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DireccionInstalacion)</td>
+                        <td>
+                            <div class="row p-1">
+                                <div class="col"></div>
+                                <div class="col"></div>
+                                <div class="col align-self-end">
+                                    <div class="form-check form-switch">
+                                        @if (item.Activo)
+                                        {
+                                            <input class="Estado form-check-input" data-path="@Url.Action("CambiarEstado", "Clientes", new { id = @item.Codigo })" checked type="checkbox">
+                                        }
+                                        else
+                                        {
+                                            <input class="Estado form-check-input" data-path="@Url.Action("CambiarEstado", "Clientes", new { id = @item.Codigo })" type="checkbox">
+                                        }
 
-                                        </div>
                                     </div>
                                 </div>
-                            </td>
-                            <td>
-                                <div class="btn-group" role="group">
-                                    <button title="Modificar" data-bs-toggle="modal" data-bs-target="#EditModal" type="button" class="btn btn-primary btn-sm editar">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </button>
-                                    <button title="Eliminar" data-path="@Url.Action("Delete", "Clientes", new { id = @item.Codigo })"
-                                            data-bs-toggle="modal" data-bs-target="#mdEliminar" class="btn btn-primary btn-sm eliminar">
-                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
-                                    </button>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <button title="Modificar" data-bs-toggle="modal" data-bs-target="#EditModal" type="button" class="btn btn-primary btn-sm editar">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </button>
+                                <button title="Eliminar" data-path="@Url.Action("Delete", "Clientes", new { id = @item.Codigo })"
+                                        data-bs-toggle="modal" data-bs-target="#mdEliminar" class="btn btn-primary btn-sm eliminar">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
 
 
-                                </div>
-                            </td>
-                        </tr>
-                    }
+                            </div>
+                        </td>
+                    </tr>
+                }
 
 
-                </tbody>
-            </table>
-        }
-        else
-        {
-            <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
-                <i class="fa fa-plus"></i>
-                <span>Clientes</span>
-            </button>
-        }
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index","Clientes", new { mensaje = string.Empty, page = 1 })" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                @for (int i = 1; i <= ViewBag.Paginas; i++)
+                {
+                    <li class="page-item"><a class="page-link" href="@Url.Action("Index","Clientes", new { mensaje = string.Empty, page = i })">@i</a></li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index","Clientes", new { mensaje = string.Empty, page = ViewBag.Paginas })" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    }
+    else
+    {
+        <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
+            <i class="fa fa-plus"></i>
+            <span>Clientes</span>
+        </button>
+    }
 
-    </div>
+</div>
 
 
 
@@ -195,8 +213,9 @@
                                 <div class="row p-1">
                                     <label for="Celular" class="col-5 col-form-label text-truncate">@Html.DisplayNameFor(model => model.Celular)</label>
                                     <div class="col-7">
-                                        <input type="tel" class="form-control" pattern="[+][0-9]{3}-[0-9]{2}-[0-9]{3}" required id="Celular" name="Celular" />
+                                        <input type="number" class="form-control"  required id="Celular" name="Celular" />
                                         <div class="invalid-feedback">Ingrese solo numeros.</div>
+                                        <div class="valid-feedback"></div>
                                     </div>
                                     
                                 </div>
@@ -312,18 +331,27 @@
                 });
 
             });
-
+            if ($("#error").text() != null)
+                window.setTimeout(function () {
+                    $("#error").alert("close");
+                }, 2000);
+            if ($("#Status").text() != null)
+                window.setTimeout(function () {
+                    $("#Status").alert("close");
+                }, 2000);
+                
+            
+           
 
         });
 
-        // Example starter JavaScript for disabling form submissions if there are invalid fields
         (() => {
             'use strict';
 
-            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+
             const forms = document.querySelectorAll('.needs-validation');
 
-            // Loop over them and prevent submission
+
             Array.prototype.slice.call(forms).forEach((form) => {
                 form.addEventListener('submit', (event) => {
                     if (!form.checkValidity()) {
@@ -334,5 +362,6 @@
                 }, false);
             });
         })();
+
     </script>
 

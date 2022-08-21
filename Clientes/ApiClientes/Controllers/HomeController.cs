@@ -10,7 +10,7 @@ namespace ApiClientes.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Inicio";
 
             return View();
         }

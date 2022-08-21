@@ -9,9 +9,18 @@ using Newtonsoft.Json;
 
 namespace Consumos
 {
+    /// <summary>
+    /// Clase global para llamdos de api
+    /// </summary>
     public class Global : IGlobal
     {
+        /// <summary>
+        /// instancia client http
+        /// </summary>
         public readonly HttpClient httpClient;
+        /// <summary>
+        /// Incicialización de clase global
+        /// </summary>
         public Global()
         {
             httpClient = new HttpClient();

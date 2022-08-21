@@ -9,44 +9,71 @@ using System.Web.Http.Results;
 
 namespace ApiClientes.Controllers
 {
+    /// <summary>
+    /// Tipo documentos controller
+    /// </summary>
     public class TipoDocumentosController : ApiController
     {
+        /// <summary>
+        /// Servicio de consumo a base de datos
+        /// </summary>
         private Logica.Servicios.ServicesTipoDocumentos _documentos;
-       
+       /// <summary>
+       /// Inicializacion del controlador para el cargue del servicio
+       /// </summary>
         public TipoDocumentosController()
         {
             _documentos = new Logica.Servicios.ServicesTipoDocumentos();
            
         }
 
-        // GET: api/TipoDocumentos
+        /// <summary>
+        /// Selecciona todos los tipos de documento
+        /// </summary>
+        /// <returns></returns>
         public async Task<IHttpActionResult> Get()
         {
                 var model = await _documentos.SeleccionarTodos();
                 return Ok(model);
         }
 
-        // GET: api/TipoDocumentos/5
+        /// <summary>
+        /// Selecciona un tipo de documento
+        /// </summary>
+        /// <param name="id">Codigo</param>
+        /// <returns></returns>
         public TipoDocumentos Get(int id)
         {
             return _documentos.SeleccionarRegistro(id);
         }
 
-        // POST: api/TipoDocumentos
+        /// <summary>
+        /// Inserta tipo de documento
+        /// </summary>
+        /// <param name="value">Modelo de datos tipo documento</param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> Post([FromBody] TipoDocumentos value)
         {
            await _documentos.Insertar(value);
             return Ok();
         }
 
-        // PUT: api/TipoDocumentos/5
+       /// <summary>
+       /// Actualiza tipo de documento
+       /// </summary>
+       /// <param name="value">Modelo de datos</param>
+       /// <returns></returns>
         public async Task<IHttpActionResult> Put([FromBody] TipoDocumentos value)
         {
             await _documentos.Actualizar(value);
             return Ok();
         }
 
-        // DELETE: api/TipoDocumentos/5
+        /// <summary>
+        /// Elimina un tipo de documento
+        /// </summary>
+        /// <param name="id">Codigo documento</param>
+        /// <returns></returns>
         public async Task<IHttpActionResult> Delete(int id)
         {
             try

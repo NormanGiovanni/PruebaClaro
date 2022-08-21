@@ -10,14 +10,27 @@ using System.Threading.Tasks;
 
 namespace Logica.Servicios
 {
+    /// <summary>
+    /// Clase servicio documentos
+    /// </summary>
     public class ServicesClientes : IClientes
     {
+        /// <summary>
+        /// Acceso a db
+        /// </summary>
         private Datos.dbClientes db;
+        /// <summary>
+        /// Contructor de la clase
+        /// </summary>
         public ServicesClientes()
         {
             db = new Datos.dbClientes();
         }
-
+        /// <summary>
+        /// Actualiza el cliente
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task Actualizar(Clientes model)
         {
             var old = db.Clientes.SingleOrDefault(b => b.Id == model.Codigo);
@@ -32,14 +45,22 @@ namespace Logica.Servicios
             await db.SaveChangesAsync();
 
         }
-
+        /// <summary>
+        /// Elimina un cliente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task Eliminar(int id)
         {
             var old = db.Clientes.SingleOrDefault(b => b.Id == id);
             db.Clientes.Remove(old);
             await db.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Inseta un cliente
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         public async Task Insertar(Clientes model)
         {
             db.Clientes.Add(new Datos.Clientes
@@ -55,7 +76,11 @@ namespace Logica.Servicios
         });
             await db.SaveChangesAsync();
         }
-
+        /// <summary>
+        /// Selecciona un cliente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Clientes SeleccionarRegistro(int id)
         {
             var dato = db.Clientes.SingleOrDefault(b => b.Id == id);
@@ -74,7 +99,10 @@ namespace Logica.Servicios
             };
             return model;
         }
-
+        /// <summary>
+        /// selecciona todos los clientes
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Clientes>> SeleccionarTodos()
         {
             var model = await db.Clientes.ToListAsync();
@@ -93,7 +121,12 @@ namespace Logica.Servicios
                         };
             return lista;
         }
-
+        /// <summary>
+        /// Modifica el estado del cliente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="Activo"></param>
+        /// <returns></returns>
         public async Task CambiarEstadoCliente(int id, bool Activo)
         {
             db.CambioEstadoCliente(id, Activo);

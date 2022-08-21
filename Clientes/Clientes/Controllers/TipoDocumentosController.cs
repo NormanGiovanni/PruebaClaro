@@ -10,15 +10,27 @@ namespace Clientes.Controllers
 {
     public class TipoDocumentosController : Controller
     {
+        /// <summary>
+        /// Intancia clase global para consumos de api
+        /// </summary>
         private Consumos.Global _apiConsulta;
+        /// <summary>
+        /// Variable de api base para consumos optenida desde el web config propiedad UrlApiBase
+        /// </summary>
         string ApiBase = string.Empty;
-        
+        /// <summary>
+        /// Constructor de la clase tipo documentos
+        /// </summary>
         public TipoDocumentosController()
         {
             _apiConsulta = new Consumos.Global();
             ApiBase = System.Configuration.ConfigurationManager.AppSettings.Get("UrlApiBase");
         }
-        // GET: TipoDocumentos
+        /// <summary>
+        /// Vista de inicio de documentos
+        /// </summary>
+        /// <param name="mensaje"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Index(string mensaje)
         {
             if(!string.IsNullOrEmpty(mensaje))
@@ -33,10 +45,12 @@ namespace Clientes.Controllers
             
             return View(model);
         }
-
-       
-
-        // POST: TipoDocumentos/Create
+       /// <summary>
+       /// Inserta o actualiza documento
+       /// </summary>
+       /// <param name="model"></param>
+       /// <param name="frm"></param>
+       /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Guardar(Consumos.Modelos.ModelTipoDocumentos model,FormCollection frm)
         {
@@ -67,11 +81,11 @@ namespace Clientes.Controllers
             }
         }
 
-      
-
-       
-
-        // GET: TipoDocumentos/Delete/5
+        /// <summary>
+        /// Elimina documento
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Delete(int id)
         {
             try

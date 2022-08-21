@@ -1,4 +1,5 @@
 ﻿using Consumos.Modelos;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,34 @@ using System.Web.Mvc;
 
 namespace Clientes.Controllers
 {
+    /// <summary>
+    /// Controlador clientes
+    /// </summary>
     public class ClientesController : Controller
     {
+        /// <summary>
+        /// Intancia clase global para consumos de api
+        /// </summary>
         private Consumos.Global _apiConsulta;
+        /// <summary>
+        /// Variable de api base para consumos optenida desde el web config propiedad UrlApiBase
+        /// </summary>
         string ApiBase = string.Empty;
-
+        /// <summary>
+        /// Constructor de clase cliente
+        /// </summary>
         public ClientesController()
         {
             _apiConsulta = new Consumos.Global();
             ApiBase = System.Configuration.ConfigurationManager.AppSettings.Get("UrlApiBase");
         }
-        public async Task<ActionResult> Index(string mensaje)
+        /// <summary>
+        /// Vista de inicio
+        /// </summary>
+        /// <param name="mensaje"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> Index(string mensaje,int? page)
         {
             if (!string.IsNullOrEmpty(mensaje))
             {
@@ -46,9 +64,18 @@ namespace Clientes.Controllers
                               DireccionInstalacion = a.DireccionInstalacion,
                               Direccion = a.Direccion
                          }).ToList();
-
-            return View(model);
+            int size = 5;
+            int pagina = page ?? 1;
+            decimal cantidaPaginas = ((decimal)model.Count) / (decimal)size;
+            ViewBag.Paginas = Math.Ceiling(cantidaPaginas) ;
+            return View(model.ToPagedList(pagina,size));
         }
+        /// <summary>
+        /// Accion para insertar un cliente o actualizarlo
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="frm"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> Guardar(Consumos.Modelos.ModelClientes model, FormCollection frm)
         {
@@ -83,7 +110,11 @@ namespace Clientes.Controllers
 
 
 
-        // GET: TipoDocumentos/Delete/5
+        /// <summary>
+        /// Eliminar un cliente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -97,6 +128,12 @@ namespace Clientes.Controllers
             }
 
         }
+        /// <summary>
+        /// Actualiza el estado del cliente
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="estado"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<ActionResult> CambiarEstado(int id,bool estado)
         {
