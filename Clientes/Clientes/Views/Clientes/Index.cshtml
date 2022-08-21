@@ -44,7 +44,7 @@
                 <tr>
                     <td colspan="11">
                         <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
-                            <i class="fa fa-plus"></i>
+                            <i class="bi bi-plus"></i>
                             <span>Clientes</span>
                         </button>
                     </td>
@@ -98,11 +98,11 @@
                         <td>
                             <div class="btn-group" role="group">
                                 <button title="Modificar" data-bs-toggle="modal" data-bs-target="#EditModal" type="button" class="btn btn-primary btn-sm editar">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    <i class="bi bi-pencil" aria-hidden="true"></i>
                                 </button>
                                 <button title="Eliminar" data-path="@Url.Action("Delete", "Clientes", new { id = @item.Codigo })"
                                         data-bs-toggle="modal" data-bs-target="#mdEliminar" class="btn btn-primary btn-sm eliminar">
-                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    <i class="bi bi-trash" aria-hidden="true"></i>
                                 </button>
 
 
@@ -136,7 +136,7 @@
     else
     {
         <button title="Adicionar" id="btnAdd" data-bs-toggle="modal" data-bs-target="#EditModal" class="nuevo btn btn-primary btn-sm">
-            <i class="fa fa-plus"></i>
+            <i class="bi bi-plus"></i>
             <span>Clientes</span>
         </button>
     }
