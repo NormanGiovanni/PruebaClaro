@@ -502,7 +502,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApiClientes.Controllers.ClientesController.Get(System.Int32)">
+        <member name="M:ApiClientes.Controllers.ClientesController.SeleccionarId(System.Int32)">
             <summary>
             Seleccionar un cliente por codigo
             </summary>
@@ -553,13 +553,13 @@
             Inicializacion del controlador para el cargue del servicio
             </summary>
         </member>
-        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Get">
+        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Seleccionar">
             <summary>
             Selecciona todos los tipos de documento
             </summary>
             <returns></returns>
         </member>
-        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Get(System.Int32)">
+        <member name="M:ApiClientes.Controllers.TipoDocumentosController.SeleccionarRegistroId(System.Int32)">
             <summary>
             Selecciona un tipo de documento
             </summary>

@@ -32,6 +32,7 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("TipoDocumentos/SeleccionarTodos")]
+        [HttpGet]
         public async Task<IHttpActionResult> Seleccionar()
         {
                 var model = await _documentos.SeleccionarTodos();
@@ -44,6 +45,7 @@ namespace ApiClientes.Controllers
         /// <param name="id">Codigo</param>
         /// <returns></returns>
         [Route("TipoDocumentos/SeleccionarRegistroId")]
+        [HttpGet]
         public TipoDocumentos SeleccionarRegistroId(int id)
         {
             return _documentos.SeleccionarRegistro(id);

@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Mvc;
+using HttpGetAttribute = System.Web.Http.HttpGetAttribute;
 using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 using RouteAttribute = System.Web.Http.RouteAttribute;
 
@@ -34,10 +35,21 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("Clientes/SeleccionarTodos")]
+        [HttpGet]
         public async Task<IHttpActionResult> Get()
         {
-            var model = await _db.SeleccionarTodos();
-            return Ok(model);
+            try
+            {
+                var model = await _db.SeleccionarTodos();
+                return Ok(model);
+            }
+            catch
+            {
+
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+                return ResponseMessage(responseMessage);
+            }
+
         }
 
         /// <summary>
@@ -46,9 +58,20 @@ namespace ApiClientes.Controllers
         /// <param name="id">Codigo cliente</param>
         /// <returns></returns>
         [Route("Clientes/SeleccionarId")]
-        public Clientes SeleccionarId(int id)
+        [HttpGet]
+        public async Task<IHttpActionResult> SeleccionarId(int id)
         {
-            return _db.SeleccionarRegistro(id);
+            try
+            {
+                var model = _db.SeleccionarRegistro(id);
+                return Ok(model);
+            }
+            catch
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+                return ResponseMessage(responseMessage);
+            }
+            
         }
         /// <summary>
         /// Insertar clientes
@@ -59,8 +82,17 @@ namespace ApiClientes.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody] Clientes value)
         {
-            await _db.Insertar(value);
-            return Ok();
+            try
+            {
+                await _db.Insertar(value);
+                return Ok(HttpStatusCode.Created);
+            }
+            catch
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return ResponseMessage(responseMessage);
+            }
+         
         }
 
         /// <summary>
@@ -72,8 +104,17 @@ namespace ApiClientes.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Actualizar([FromBody] Clientes value)
         {
-            await _db.Actualizar(value);
-            return Ok();
+            try
+            {
+                await _db.Actualizar(value);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return ResponseMessage(responseMessage);
+            }
+
         }
 
         /// <summary>
@@ -85,8 +126,17 @@ namespace ApiClientes.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Delete(int id)
         {
-            await _db.Eliminar(id);
-            return Ok();
+            try
+            {
+                await _db.Eliminar(id);
+                return Ok(HttpStatusCode.OK);
+            }
+            catch
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.BadRequest);
+                return ResponseMessage(responseMessage);
+            }
+
 
         }
         /// <summary>
@@ -98,8 +148,17 @@ namespace ApiClientes.Controllers
         [Route("Clientes/Activar")]
         public async Task<IHttpActionResult> ActivarCliente(int id, bool activo)
         {
-            await _db.CambiarEstadoCliente(id,activo);
-            return Ok();
+            try
+            {
+                await _db.CambiarEstadoCliente(id, activo);
+                return Ok(HttpStatusCode.Accepted);
+            }
+            catch
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                return ResponseMessage(responseMessage);
+            }
+
         }
     }
 }
