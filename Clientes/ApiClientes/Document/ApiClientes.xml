@@ -516,7 +516,7 @@
             <param name="value">Modelo de datos cliente</param>
             <returns></returns>
         </member>
-        <member name="M:ApiClientes.Controllers.ClientesController.Put(Logica.Modelos.Clientes)">
+        <member name="M:ApiClientes.Controllers.ClientesController.Actualizar(Logica.Modelos.Clientes)">
             <summary>
             Actualizar clientes
             </summary>
@@ -573,14 +573,14 @@
             <param name="value">Modelo de datos tipo documento</param>
             <returns></returns>
         </member>
-        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Put(Logica.Modelos.TipoDocumentos)">
+        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Actualizar(Logica.Modelos.TipoDocumentos)">
             <summary>
             Actualiza tipo de documento
             </summary>
             <param name="value">Modelo de datos</param>
             <returns></returns>
         </member>
-        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Delete(System.Int32)">
+        <member name="M:ApiClientes.Controllers.TipoDocumentosController.Eliminar(System.Int32)">
             <summary>
             Elimina un tipo de documento
             </summary>

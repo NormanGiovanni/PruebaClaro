@@ -37,7 +37,7 @@ namespace Consumos
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, endpoint);
+                var request = new HttpRequestMessage(HttpMethod.Post, endpoint);
                 var dato = JsonConvert.SerializeObject(model);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 request.Content = new StringContent(dato, Encoding.UTF8);
@@ -64,7 +64,7 @@ namespace Consumos
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Delete, endpoint + id);
+                var request = new HttpRequestMessage(HttpMethod.Post, endpoint + id);
                 request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var response = await httpClient.SendAsync(request);
                 response.EnsureSuccessStatusCode();

@@ -31,7 +31,8 @@ namespace ApiClientes.Controllers
         /// Selecciona todos los tipos de documento
         /// </summary>
         /// <returns></returns>
-        public async Task<IHttpActionResult> Get()
+        [Route("TipoDocumentos/SeleccionarTodos")]
+        public async Task<IHttpActionResult> Seleccionar()
         {
                 var model = await _documentos.SeleccionarTodos();
                 return Ok(model);
@@ -42,7 +43,8 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo</param>
         /// <returns></returns>
-        public TipoDocumentos Get(int id)
+        [Route("TipoDocumentos/SeleccionarRegistroId")]
+        public TipoDocumentos SeleccionarRegistroId(int id)
         {
             return _documentos.SeleccionarRegistro(id);
         }
@@ -52,18 +54,22 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="value">Modelo de datos tipo documento</param>
         /// <returns></returns>
+        [Route("TipoDocumentos/Crear")]
+        [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody] TipoDocumentos value)
         {
            await _documentos.Insertar(value);
             return Ok();
         }
 
-       /// <summary>
-       /// Actualiza tipo de documento
-       /// </summary>
-       /// <param name="value">Modelo de datos</param>
-       /// <returns></returns>
-        public async Task<IHttpActionResult> Put([FromBody] TipoDocumentos value)
+        /// <summary>
+        /// Actualiza tipo de documento
+        /// </summary>
+        /// <param name="value">Modelo de datos</param>
+        /// <returns></returns>
+        [Route("TipoDocumentos/Actualizar")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Actualizar([FromBody] TipoDocumentos value)
         {
             await _documentos.Actualizar(value);
             return Ok();
@@ -74,7 +80,9 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo documento</param>
         /// <returns></returns>
-        public async Task<IHttpActionResult> Delete(int id)
+        [Route("TipoDocumentos/Eliminar")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Eliminar(int id)
         {
             try
             {

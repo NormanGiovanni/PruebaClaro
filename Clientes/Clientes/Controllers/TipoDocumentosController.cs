@@ -41,7 +41,7 @@ namespace Clientes.Controllers
                     ViewBag.Ok = mensaje;
             }
                 
-            var model = await _apiConsulta.Seleccionar<Consumos.Modelos.ModelTipoDocumentos>($"{ApiBase}/api/TipoDocumentos");
+            var model = await _apiConsulta.Seleccionar<Consumos.Modelos.ModelTipoDocumentos>($"{ApiBase}/TipoDocumentos/SeleccionarTodos");
             
             return View(model);
         }
@@ -59,9 +59,9 @@ namespace Clientes.Controllers
                 var Activo = frm["Activo"];
                 if (Activo == "on")
                     model.Activo = true;
-                var old = await _apiConsulta.SeleccionarRegistro<Consumos.Modelos.ModelTipoDocumentos>($"{ApiBase}/api/TipoDocumentos/",model.Codigo);
+                var old = await _apiConsulta.SeleccionarRegistro<Consumos.Modelos.ModelTipoDocumentos>($"{ApiBase}/TipoDocumentos/SeleccionarRegistroId/",model.Codigo);
                 if (old != null)
-                    await _apiConsulta.Actualizar(model, $"{ApiBase}/api/TipoDocumentos");
+                    await _apiConsulta.Actualizar(model, $"{ApiBase}/TipoDocumentos/Actualizar");
                 
                 return RedirectToAction("Index", new { mensaje = "El registro ha sido modficado exitosamente" });
             }
@@ -70,7 +70,7 @@ namespace Clientes.Controllers
                 try
                 {
                     model.Activo = true;
-                    await _apiConsulta.Insertar(model, $"{ApiBase}/api/TipoDocumentos");
+                    await _apiConsulta.Insertar(model, $"{ApiBase}/TipoDocumentos/Crear");
                     return RedirectToAction("Index", new { mensaje = "El registro ha sido creado exitosamente" });
                 }
                 catch (Exception ex)
@@ -90,7 +90,7 @@ namespace Clientes.Controllers
         {
             try
             {
-                await _apiConsulta.Eliminar(id, $"{ApiBase}/api/TipoDocumentos/");
+                await _apiConsulta.Eliminar(id, $"{ApiBase}/TipoDocumentos/Eliminar");
                 return RedirectToAction("Index", new { mensaje = "El registro ha sido eliminado exitosamente"});
             }
             catch (Exception ex)

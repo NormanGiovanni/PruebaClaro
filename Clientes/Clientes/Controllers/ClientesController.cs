@@ -46,8 +46,8 @@ namespace Clientes.Controllers
                 if (mensaje.Contains("registro"))
                     ViewBag.Ok = mensaje;
             }
-            var tipodocumentos = await _apiConsulta.Seleccionar<Consumos.Modelos.ModelTipoDocumentos>($"{ApiBase}/api/TipoDocumentos");
-            var clientes = await _apiConsulta.Seleccionar<Consumos.Modelos.ModelClientes>($"{ApiBase}/api/Clientes");
+            var tipodocumentos = await _apiConsulta.Seleccionar<Consumos.Modelos.ModelTipoDocumentos>($"{ApiBase}/TipoDocumentos/SeleccionarTodos");
+            var clientes = await _apiConsulta.Seleccionar<Consumos.Modelos.ModelClientes>($"{ApiBase}/Clientes/SeleccionarTodos");
             ViewData["TipoDocumento"] = tipodocumentos.Where( b=> b.Activo);
             var model = (from a in clientes
                          join b in tipodocumentos on a.Tipodocumento equals b.Codigo
@@ -84,9 +84,9 @@ namespace Clientes.Controllers
                 var Activo = frm["Activo"];
                 if (Activo == "on")
                     model.Activo = true;
-                var old = await _apiConsulta.SeleccionarRegistro<Consumos.Modelos.ModelClientes>($"{ApiBase}/api/Clientes/",model.Codigo);
+                var old = await _apiConsulta.SeleccionarRegistro<Consumos.Modelos.ModelClientes>($"{ApiBase}/Clientes/SeleccionarId/",model.Codigo);
                 if (old != null)
-                    await _apiConsulta.Actualizar(model, $"{ApiBase}/api/Clientes");
+                    await _apiConsulta.Actualizar(model, $"{ApiBase}/Clientes/Actualizar");
 
                 return RedirectToAction("Index", new { mensaje = "El registro ha sido modficado exitosamente" });
             }
@@ -95,7 +95,7 @@ namespace Clientes.Controllers
                 try
                 {
                     model.Activo = true;
-                    await _apiConsulta.Insertar(model, $"{ApiBase}/api/Clientes");
+                    await _apiConsulta.Insertar(model, $"{ApiBase}/Clientes/Crear");
                     return RedirectToAction("Index", new { mensaje = "El registro ha sido creado exitosamente" });
                 }
                 catch (Exception ex)
@@ -106,10 +106,6 @@ namespace Clientes.Controllers
             }
         }
 
-
-
-
-
         /// <summary>
         /// Eliminar un cliente
         /// </summary>
@@ -119,7 +115,7 @@ namespace Clientes.Controllers
         {
             try
             {
-                await _apiConsulta.Eliminar(id, $"{ApiBase}/api/Clientes/");
+                await _apiConsulta.Eliminar(id, $"{ApiBase}/Clientes/Eliminar/");
                 return RedirectToAction("Index", new { mensaje = "El registro ha sido eliminado exitosamente" });
             }
             catch (Exception ex)
@@ -137,7 +133,7 @@ namespace Clientes.Controllers
         [HttpPost]
         public async Task<ActionResult> CambiarEstado(int id,bool estado)
         {
-                await _apiConsulta.Estado(id,estado, $"{ApiBase}/api/Clientes/");
+                await _apiConsulta.Estado(id,estado, $"{ApiBase}/Clientes/Activar/");
             string mensaje = string.Empty;
             if (estado)
                 mensaje = "El registro ha sido activado exitosamente";

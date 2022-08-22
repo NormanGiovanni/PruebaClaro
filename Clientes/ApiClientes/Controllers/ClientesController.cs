@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Mvc;
+using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
+using RouteAttribute = System.Web.Http.RouteAttribute;
 
 namespace ApiClientes.Controllers
 {
@@ -31,6 +33,7 @@ namespace ApiClientes.Controllers
         /// Seleccionar todos los clientes
         /// </summary>
         /// <returns></returns>
+        [Route("Clientes/SeleccionarTodos")]
         public async Task<IHttpActionResult> Get()
         {
             var model = await _db.SeleccionarTodos();
@@ -42,7 +45,8 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo cliente</param>
         /// <returns></returns>
-        public Clientes Get(int id)
+        [Route("Clientes/SeleccionarId")]
+        public Clientes SeleccionarId(int id)
         {
             return _db.SeleccionarRegistro(id);
         }
@@ -51,6 +55,8 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="value">Modelo de datos cliente</param>
         /// <returns></returns>
+        [Route("Clientes/Crear")]
+        [HttpPost]
         public async Task<IHttpActionResult> Post([FromBody] Clientes value)
         {
             await _db.Insertar(value);
@@ -62,7 +68,9 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="value">Modelo de datos cliente</param>
         /// <returns></returns>
-        public async Task<IHttpActionResult> Put([FromBody] Clientes value)
+        [Route("Clientes/Actualizar")]
+        [HttpPost]
+        public async Task<IHttpActionResult> Actualizar([FromBody] Clientes value)
         {
             await _db.Actualizar(value);
             return Ok();
@@ -73,6 +81,8 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo clientes</param>
         /// <returns></returns>
+        [Route("Clientes/Eliminar")]
+        [HttpPost]
         public async Task<IHttpActionResult> Delete(int id)
         {
             await _db.Eliminar(id);
@@ -85,6 +95,7 @@ namespace ApiClientes.Controllers
         /// <param name="id">Codigo cliente</param>
         /// <param name="activo">Estado del cliente activo: true, inactivo : false</param>
         /// <returns></returns>
+        [Route("Clientes/Activar")]
         public async Task<IHttpActionResult> ActivarCliente(int id, bool activo)
         {
             await _db.CambiarEstadoCliente(id,activo);
