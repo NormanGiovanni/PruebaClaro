@@ -18,13 +18,13 @@ namespace ApiClientes.Controllers
         /// Servicio de consumo a base de datos
         /// </summary>
         private Logica.Servicios.ServicesTipoDocumentos _documentos;
-       /// <summary>
-       /// Inicializacion del controlador para el cargue del servicio
-       /// </summary>
+        /// <summary>
+        /// Inicializacion del controlador para el cargue del servicio
+        /// </summary>
         public TipoDocumentosController()
         {
             _documentos = new Logica.Servicios.ServicesTipoDocumentos();
-           
+
         }
 
         /// <summary>
@@ -35,8 +35,8 @@ namespace ApiClientes.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> Seleccionar()
         {
-                var model = await _documentos.SeleccionarTodos();
-                return Ok(model);
+            var model = await _documentos.SeleccionarTodos();
+            return Ok(model);
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo</param>
         /// <returns></returns>
-        [Route("TipoDocumentos/SeleccionarRegistroId")]
+        [Route("TipoDocumentos/SeleccionarRegistroId/{id}")]
         [HttpGet]
         public TipoDocumentos SeleccionarRegistroId(int id)
         {
@@ -82,7 +82,7 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo documento</param>
         /// <returns></returns>
-        [Route("TipoDocumentos/Eliminar")]
+        [Route("TipoDocumentos/Eliminar/{id}")]
         [HttpPost]
         public async Task<IHttpActionResult> Eliminar(int id)
         {

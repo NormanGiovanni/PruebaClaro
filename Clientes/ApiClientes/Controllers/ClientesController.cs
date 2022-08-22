@@ -57,7 +57,7 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo cliente</param>
         /// <returns></returns>
-        [Route("Clientes/SeleccionarId")]
+        [Route("Clientes/SeleccionarId/{id}")]
         [HttpGet]
         public async Task<IHttpActionResult> SeleccionarId(int id)
         {
@@ -122,7 +122,7 @@ namespace ApiClientes.Controllers
         /// </summary>
         /// <param name="id">Codigo clientes</param>
         /// <returns></returns>
-        [Route("Clientes/Eliminar")]
+        [Route("Clientes/Eliminar/{id}")]
         [HttpPost]
         public async Task<IHttpActionResult> Delete(int id)
         {
@@ -145,7 +145,8 @@ namespace ApiClientes.Controllers
         /// <param name="id">Codigo cliente</param>
         /// <param name="activo">Estado del cliente activo: true, inactivo : false</param>
         /// <returns></returns>
-        [Route("Clientes/Activar")]
+        [Route("Clientes/Activar/{id}/")]
+        [HttpPost]
         public async Task<IHttpActionResult> ActivarCliente(int id, bool activo)
         {
             try
